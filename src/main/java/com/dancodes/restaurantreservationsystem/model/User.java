@@ -5,21 +5,13 @@ import java.time.Period;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 
 @Entity
 @Table(name="User")
-// public class User extends AbstractEntity{
-public class User{
-    @Id
-    // @SequenceGenerator(
-    //     name = "user_sequence"   
-    // )
-    @Column(name = "ID")
-    private Long id;
+public class User extends AbstractEntity{
 
     @Column(name = "FIRSTNAME")
     private String firstName;
@@ -50,19 +42,7 @@ public class User{
 
     public User() {}
 
-    public User(Long id, String firstName, String lastName, String userName, String password, String email, LocalDate dateOfBirth,
-                String address, String phoneNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.password = password;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-    }
-    public User (String firstName, String lastName, String userName, String password, String email, LocalDate dateOfBirth,
+    public User(String firstName, String lastName, String userName, String password, String email, LocalDate dateOfBirth,
                 String address, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -81,12 +61,6 @@ public class User{
                 ", email='" + email + '\'' + 
                 ", password='" + password + '\'' + 
                 '}';
-    }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
     public String getFirstName() {
         return firstName;
