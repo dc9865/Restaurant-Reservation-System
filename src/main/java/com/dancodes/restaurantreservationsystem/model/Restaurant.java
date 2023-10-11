@@ -1,18 +1,35 @@
 package com.dancodes.restaurantreservationsystem.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="Restaurant")
 public class Restaurant extends AbstractEntity {
     
+    @Column(name="name")
     private String name;
-    private String address;
-    private List<MenuItem> menu;
-    private Reservation reservations;
 
-    public Restaurant(String name, String address, List<MenuItem> menu, Reservation reservations) {
+    @Column(name="address")
+    private String address;
+
+    @OneToMany(mappedBy="restaurant")
+    private List<MenuItem> menuItems;
+
+    // Assuming the Reservation entity has a field named
+    // "restaurant" that refers back to this Restaurant entity.
+    @OneToMany(mappedBy="restaurant")
+    private List<Reservation> reservations = new ArrayList<>();
+
+    public Restaurant(String name, String address, List<MenuItem> menuItems, List<Reservation> reservations) {
         this.name = name;
         this.address = address;
-        this.menu = menu;
+        this.menuItems = menuItems;
         this.reservations = reservations;
     }
 
@@ -32,28 +49,28 @@ public class Restaurant extends AbstractEntity {
         this.address = address;
     }
 
-    public List<MenuItem> getMenu() {
-        return menu;
-    }
-
-    public void setMenu(List<MenuItem> menu) {
-        this.menu = menu;
-    }
-
-    public Reservation getReservations() {
+    public List<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Reservation reservations) {
+    public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
 
-    public String toString() {
-        return "Restaurant{" +
-                "name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", menu='" + menu + '\'' +
-                ", reservations='" + reservations + '\'' +
-                '}';
+    public List<MenuItem> getMenuItems() {
+        return menuItems;
     }
+
+    public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = menuItems;
+    }
+
+    // public String toString() {
+    //     return "Restaurant{" +
+    //             "name='" + name + '\'' +
+    //             ", address='" + address + '\'' +
+    //             ", menu='" + menu + '\'' +
+    //             ", reservations='" + reservations + '\'' +
+    //             '}';
+    // }
 }

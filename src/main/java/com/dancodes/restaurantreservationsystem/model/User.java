@@ -2,9 +2,15 @@ package com.dancodes.restaurantreservationsystem.model;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -13,32 +19,44 @@ import jakarta.persistence.Transient;
 @Table(name="User")
 public class User extends AbstractEntity{
 
-    @Column(name = "FIRSTNAME")
+    @Column(name = "firstName")
     private String firstName;
 
-    @Column(name = "LASTNAME")
+    @Column(name = "lastName")
     private String lastName; 
 
-    @Column(name = "USERNAME")
+    @Column(name = "userName")
     private String userName;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "EMAIL")
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "DATEOFBIRTH")
+    @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "ADDRESS")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "PHONENUMBER")
+    @Column(name = "phoneNumber")
     private String phoneNumber;
 
     @Transient
     private int age;
+
+    @ManyToOne
+    @JoinColumn(name="reservation_id")
+    private Reservation reservation;
+
+    @ManyToMany
+    @JoinTable(
+        name = "User_Role",
+        joinColumns = @JoinColumn(name="userId"),
+        inverseJoinColumns = @JoinColumn(name="roleId")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     public User() {}
 
@@ -54,14 +72,14 @@ public class User extends AbstractEntity{
         this.phoneNumber = phoneNumber;
     }
 
-    public String toString() {
-        return "User{" + 
-                "firstName='" + firstName + '\'' + 
-                ", lastName='" + lastName + '\'' + 
-                ", email='" + email + '\'' + 
-                ", password='" + password + '\'' + 
-                '}';
-    }
+    // public String toString() {
+    //     return "User{" + 
+    //             "firstName='" + firstName + '\'' + 
+    //             ", lastName='" + lastName + '\'' + 
+    //             ", email='" + email + '\'' + 
+    //             ", password='" + password + '\'' + 
+    //             '}';
+    // }
     public String getFirstName() {
         return firstName;
     }
@@ -111,6 +129,9 @@ public class User extends AbstractEntity{
         this.phoneNumber = phoneNumber;
     }
     public int getAge() {
+        if (dateOfBirth == null) {
+            return 0;
+        }
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
