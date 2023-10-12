@@ -26,6 +26,8 @@ public class Restaurant extends AbstractEntity {
     @OneToMany(mappedBy="restaurant")
     private List<Reservation> reservations = new ArrayList<>();
 
+    public Restaurant() {}
+
     public Restaurant(String name, String address, List<MenuItem> menuItems, List<Reservation> reservations) {
         this.name = name;
         this.address = address;
