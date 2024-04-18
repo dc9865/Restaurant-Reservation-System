@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Not Found</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" /> <!-- Assuming external CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>User Not Found</h1>
+        <p>We couldn't find an account associated with the email provided. What would you like to do next?</p>
+        <a th:href="@{/register}" class="btn">Register as New User</a>
+        <a th:href="@{/continue-as-guest}" class="btn">Continue as Guest</a>
+    </div>
+</body>
+</html>

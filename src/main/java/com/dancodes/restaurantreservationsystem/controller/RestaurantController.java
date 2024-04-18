@@ -25,25 +25,29 @@ public class RestaurantController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping
-    public List<Restaurant> getRestaurants() {
-        return restaurantService.getRestaurants();
-    }
+    // @GetMapping("/search")
+    // public List<Restaurant> getRestaurants() {
+    //     return restaurantService.getRestaurants();
+    // }
     
-    @PostMapping
-    public void registerNewRestaurant(@RequestBody Restaurant restaurant) {
-        restaurantService.addNewRestaurant(restaurant);
-    }
+    // @PostMapping
+    // public void registerNewRestaurant(@RequestBody Restaurant restaurant) {
+    //     restaurantService.addNewRestaurant(restaurant);
+    // }
 
-    @DeleteMapping(path="{restaurantId}")
-    public void deleteRestaurant(@PathVariable("restaurantId") Long restaurantId) {
-        restaurantService.deleteRestaurant(restaurantId);
-    }
+    // @DeleteMapping(path="{restaurant_id}")
+    // public void deleteRestaurant(@PathVariable("restaurant_id") Long restaurantId) {
+    //     restaurantService.deleteRestaurant(restaurantId);
+    // }
 
-    @PutMapping(path={"restaurantId"})
-    public void updateRestaurant(@PathVariable("restaurantId") Long id,
-                                 @RequestParam(required=false) String name,
-                                 @RequestParam(required=false) String address) {
-        restaurantService.updateRestaurant(id, name, address);
-    }
+    // @PutMapping(path={"restaurantId"})
+    // public void updateRestaurant(@PathVariable("restaurant_id") Long restaurantId,
+    //                              @RequestParam(required=false) Long menuItemId,
+    //                              @RequestParam(required=false) Long reservationId,
+    //                              @RequestParam(required=false) String name,
+    //                              @RequestParam(required=false) String email,
+    //                              @RequestParam(required=false) String number,
+    //                              @RequestParam(required=false) String address) {
+    //     restaurantService.updateRestaurant(restaurantId, menuItemId, reservationId, name, email, number, address);
+    // }
 }

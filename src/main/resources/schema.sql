@@ -1,0 +1,41 @@
+-- create table if not exists "user"
+-- (
+--     id serial primary key,
+--     first_name varchar(20),
+--     last_name varchar(20),
+--     address varchar(20),
+--     phone_number varchar (20),
+--     email varchar(20) unique,
+--     password varchar(256)
+-- )
+
+-- create table if not exists "reservation"
+-- (
+--     id serial primary key,
+--     date timestamp not null,
+--     time timestamp not null,
+--     number_of_people integer
+-- )
+
+-- create table if not exists "restaurant"
+-- (
+--     id serial primary key,
+--     name varchar(20),
+--     address varchar(20),
+--     email varchar(20) unique,
+--     phone_number varchar(20)
+-- )
+
+-- create table if not exists "tables"
+-- (
+--     id serial primary key,
+--     capacity integer
+-- )
+
+-- create table if not exists "menuitem"
+-- (
+--     id serial primary key,
+--     name varchar(20),
+--     description varchar(50),
+--     price numeric(7,2)
+-- )

@@ -15,25 +15,26 @@ public class Restaurant extends AbstractEntity {
     @Column(name="name")
     private String name;
 
+    @Column(name="email", unique=true)
+    private String email;
+
+    @Column(name="phone_number")
+    private String phoneNumber;
+
     @Column(name="address")
     private String address;
 
     @OneToMany(mappedBy="restaurant")
     private List<MenuItem> menuItems;
 
+    @OneToMany(mappedBy="restaurant")
+    private List<Tables> tables;
+
     // Assuming the Reservation entity has a field named
     // "restaurant" that refers back to this Restaurant entity.
+    // @OneToMany(mappedBy="restaurant")
     @OneToMany(mappedBy="restaurant")
     private List<Reservation> reservations = new ArrayList<>();
-
-    public Restaurant() {}
-
-    public Restaurant(String name, String address, List<MenuItem> menuItems, List<Reservation> reservations) {
-        this.name = name;
-        this.address = address;
-        this.menuItems = menuItems;
-        this.reservations = reservations;
-    }
 
     public String getName() {
         return name;
@@ -41,6 +42,22 @@ public class Restaurant extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getAddress() {
@@ -65,6 +82,14 @@ public class Restaurant extends AbstractEntity {
 
     public void setMenuItems(List<MenuItem> menuItems) {
         this.menuItems = menuItems;
+    }
+
+    public List<Tables> getTables() {
+        return tables;
+    }
+
+    public void setTables(List<Tables> tables) {
+        this.tables = tables;
     }
 
     // public String toString() {

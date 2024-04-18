@@ -1,18 +1,37 @@
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-            .antMatchers("/","/home").permitAll()  // Allow all users to access static resources
-            .anyRequest().authenticated();         // Other requests require authentication
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-        auth.inMemoryAuthentication().withUser("admin").password("password").roles("ADMIN");
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/").permitAll()
+            .antMatchers(HttpMethod.POST,"/reservations/*").permitAll()
+            .antMatchers(HttpMethod.POST,"/index").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .httpBasic(); // or formLogin() based on your preference
     }
+    
+
+    // public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    //     auth.inMemoryAuthentication()
+    //         .withUser("user")
+    //         .password(passwordEncoder().encode("password"))
+    //         .roles("USER");
+    //     auth.inMemoryAuthentication()
+    //         .withUser("admin")
+    //         .password(passwordEncoder().encode("password"))
+    //         .roles("ADMIN");
+    // }
 }

@@ -7,23 +7,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="MenuItem")
+// @Table(name = "menuItem")
 public class MenuItem extends AbstractEntity{
 
     private String name;
     private String description;
     private double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="restaurant_id")
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name="restaurant_id")
+    @ManyToOne
     private Restaurant restaurant;
-
-    public MenuItem(String name, String description, double price, Restaurant restaurant) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.restaurant = restaurant;
-    }
 
     public String getName() {
         return name;

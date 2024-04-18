@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dancodes.restaurantreservationsystem.model.User;
 import com.dancodes.restaurantreservationsystem.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {
@@ -25,27 +27,31 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
-    }
+    // @GetMapping("/search")
+    // public List<User> getUsers() {
+    //     return userService.getUsers();
+    // }
 
-    @PostMapping
-    public void registerNewUser(@RequestBody User user) {
-        userService.addNewUser(user);
-    } 
+    // @PostMapping("/add")
+    // public void registerNewUser(@Valid @RequestBody User user) {
+    //     userService.addNewUser(user);
+    // } 
 
-    @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") Long userId) {
-        userService.deleteUser(userId);
-    }
+    // @DeleteMapping(path = "{userId}")
+    // public void deleteUser(@PathVariable("userId") Long userId) {
+    //     userService.deleteUser(userId);
+    // }
 
-    @PutMapping(path = "{userId}")
-    public void updateUser(
-        @PathVariable("userId") Long userId,
-        @RequestParam(required=false) String firstName,
-        @RequestParam(required=false) String email
-        ) {
-        userService.updateUser(userId, firstName, email);
-    } 
+    // @PutMapping(path = "{userId}")
+    // public void updateUser(
+    //     @PathVariable("userId") Long userId,
+    //     @RequestParam(required=false) String firstName,
+    //     @RequestParam(required=false) String lastName,
+    //     @RequestParam(required=false) String email,
+    //     @RequestParam(required=false) String password,
+    //     @RequestParam(required=false) String address,
+    //     @RequestParam(required=false) String number
+    //     ) {
+    //     userService.updateUser(userId, firstName, lastName, email, password, address, number);
+    // } 
 }

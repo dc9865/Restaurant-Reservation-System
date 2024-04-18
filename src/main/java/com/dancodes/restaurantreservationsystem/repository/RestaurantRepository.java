@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.dancodes.restaurantreservationsystem.model.Restaurant;
 
-@Repository
+// @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long>{
 
-    boolean existsById(Long id);
+    // boolean existsById(Long id);
 }
