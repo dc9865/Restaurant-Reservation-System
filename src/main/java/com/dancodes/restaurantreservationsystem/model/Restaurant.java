@@ -1,17 +1,24 @@
 package com.dancodes.restaurantreservationsystem.model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Restaurant")
-public class Restaurant extends AbstractEntity {
-    
+@Table(name="restaurant")
+public class Restaurant extends AbstractEntity{
+
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private Long id;
+
     @Column(name="name")
     private String name;
 
@@ -24,18 +31,22 @@ public class Restaurant extends AbstractEntity {
     @Column(name="address")
     private String address;
 
-    @OneToMany(mappedBy="restaurant")
-    private List<MenuItem> menuItems;
-
-    @OneToMany(mappedBy="restaurant")
-    private List<Tables> tables;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Tables> tables;
 
     // Assuming the Reservation entity has a field named
     // "restaurant" that refers back to this Restaurant entity.
     // @OneToMany(mappedBy="restaurant")
-    @OneToMany(mappedBy="restaurant")
-    private List<Reservation> reservations = new ArrayList<>();
+    @OneToMany(mappedBy="restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reservation> reservations;
 
+    // public Long getId() {
+    //     return this.id;
+    // }
+
+    // public void setId(Long id) {
+    //     this.id = id;
+    // }
     public String getName() {
         return name;
     }
@@ -67,6 +78,14 @@ public class Restaurant extends AbstractEntity {
     public void setAddress(String address) {
         this.address = address;
     }
+    
+    public Set<Tables> getTables() {
+        return tables;
+    }
+
+    public void setTables(Set<Tables> tables) {
+        this.tables = tables;
+    }
 
     public List<Reservation> getReservations() {
         return reservations;
@@ -74,22 +93,6 @@ public class Restaurant extends AbstractEntity {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
-    }
-
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
-    }
-
-    public void setMenuItems(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
-    }
-
-    public List<Tables> getTables() {
-        return tables;
-    }
-
-    public void setTables(List<Tables> tables) {
-        this.tables = tables;
     }
 
     // public String toString() {

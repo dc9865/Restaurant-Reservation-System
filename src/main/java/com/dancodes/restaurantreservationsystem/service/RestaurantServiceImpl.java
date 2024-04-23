@@ -2,23 +2,27 @@ package com.dancodes.restaurantreservationsystem.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
+import com.dancodes.restaurantreservationsystem.dto.RestaurantCreateRequest;
 import com.dancodes.restaurantreservationsystem.exceptions.RestaurantNotFound;
-import com.dancodes.restaurantreservationsystem.repository.MenuItemRepository;
+import com.dancodes.restaurantreservationsystem.model.Restaurant;
 import com.dancodes.restaurantreservationsystem.repository.RestaurantRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationServiceImpl.class);
     private final RestaurantRepository restaurantRepository;
-    private final MenuItemRepository menuItemRepository;
+    private static final String PHONE_NUMBER_PATTERN = "^\\+?([0-9]{1,3})?[-.\\s]?([(]?[0-9]{1,3}[)]?)?[-.\\s]?[0-9]{3}[-.\\s]?[0-9]{3,4}[-.\\s]?[0-9]{3,4}$";
 
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, MenuItemRepository menuItemRepository) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
-        this.menuItemRepository = menuItemRepository;
     }
 
     public boolean validateRestaurant(Long id, int numberOfPeople, LocalDate reservationDate, LocalTime reservationTime) {
@@ -37,40 +41,78 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new IllegalArgumentException("Reservation date must be in the future");
         }
 
-        if (!reservationTime.isAfter(LocalTime.now())) {
+        if (reservationDate.isEqual(LocalDate.now()) && !reservationTime.isAfter(LocalTime.now())) {
             throw new IllegalArgumentException("Reservation time must be in the future");
         }
 
         return true;
     }
+    private boolean validateRestaurant(String email, String phoneNumber, String address) {
+        if (restaurantRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Restaurant with the email: " + email + "already exists");
+        }
+        // if (!isValidPhoneNumber(phoneNumber)) {
+        //     throw new IllegalArgumentException("Invalid phone number syntax");
+        // }
+        if (restaurantRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new IllegalArgumentException("Restuarant with the phone number: " + phoneNumber + "ralready exists");
+        }
+        if (restaurantRepository.existsByAddress(address)) {
+            throw new IllegalArgumentException("Restaurant with the address: " + address + "arleady exists" );
+        }
+        return true;
+    } 
 
-    // public List<Restaurant> getRestaurants() {
-    //     return restaurantRepository.findAll();
-    // }
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.matches(PHONE_NUMBER_PATTERN);
+    }
 
-    // public Restaurant getRestaurant(Long restaurantId) {
-    //     Restaurant restaurant = restaurantRepository.findById(restaurantId)
-    //                         .orElseThrow(() -> new IllegalStateException(
-    //                             "restaurant with id " + restaurantId + " does not exist"
-    //                         ));
-    //     return restaurant;
-    // }
+    @Override
+    public List<Restaurant> getRestaurants() {
+        return restaurantRepository.findAll();
+    }
 
-    // // Admins can add new restaurants to the system
-    // public void addNewRestaurant(Restaurant restaurant) {
-    //     // In the future, if there is any data that has unique constraints,
-    //     // will have to make a case for it as if the data is already taken
-    //     // by another restaurant, you cannot add the new restaurant.
-    //     restaurantRepository.save(restaurant);
-    // }
+    @Override
+    public Restaurant getRestaurantById(Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                            .orElseThrow(() -> new IllegalStateException(
+                                "restaurant with id: " + restaurantId + " does not exist"
+                            ));
+        return restaurant;
+    }
 
-    // public void deleteRestaurant(Long id) {
-    //     Boolean id_exists = restaurantRepository.existsById(id);
-    //     if (!id_exists) {
-    //         throw new IllegalStateException("restaurant with id" + id + "does not exist.");
-    //     }
-    //     restaurantRepository.deleteById(id);
-    // }
+    @Override
+    // Admins can add new restaurants to the system
+    public Restaurant createRestaurant(RestaurantCreateRequest request) {
+        // Validate id, email, address, and phoneNumber only
+        String email = request.getEmail();
+        String address = request.getAddress();
+        String phoneNumber = request.getPhoneNumber();
+        if (validateRestaurant(email, address, phoneNumber)) {
+            LOGGER.info("The restaurant is validated");
+        }
+
+        // Create a new restaurant and update information according to the data from DTO.
+        Restaurant restaurant = new Restaurant();
+        restaurant.setAddress(request.getAddress());
+        restaurant.setEmail(request.getEmail());
+        restaurant.setName(request.getName());
+        restaurant.setPhoneNumber(request.getPhoneNumber());
+        restaurant.setTables(request.getTables());
+
+        return restaurantRepository.save(restaurant);
+    }
+
+    // Admins can delete restaurants from the system
+    public void deleteRestaurant(Long id) {
+        Boolean id_exists = restaurantRepository.existsById(id);
+        if (!id_exists) {
+            throw new IllegalStateException("restaurant with id" + id + "does not exist.");
+        }
+        restaurantRepository.deleteById(id);
+    }
+
+
 
     // @Transactional
     // public void updateRestaurant(Long restaurantId, Long menuItemId, Long reservationId, 

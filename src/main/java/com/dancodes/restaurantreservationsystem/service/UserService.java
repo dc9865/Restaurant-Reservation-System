@@ -1,10 +1,18 @@
 package com.dancodes.restaurantreservationsystem.service;
 
-import com.dancodes.restaurantreservationsystem.dto.ReservationCreateRequest;
-// import com.dancodes.restaurantreservationsystem.dto.ReservationRequest;
+import java.util.List;
+
+import com.dancodes.restaurantreservationsystem.dto.UserCreateRequest;
 import com.dancodes.restaurantreservationsystem.model.User;
 
 public interface UserService {
 
-    public boolean validateUser(String email);
+    public boolean validateUser(String email, String phoneNumber);
+
+    public User getUserById(Long id);
+
+    public List<User> getUsers();
+
+    public User createUser(UserCreateRequest userCreateRequest);
+
 }

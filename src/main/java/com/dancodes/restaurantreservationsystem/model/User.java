@@ -6,14 +6,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.JoinTable;
-// import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "user")
 public class User extends AbstractEntity{
 
     @Column(name = "first_name")
@@ -34,28 +31,12 @@ public class User extends AbstractEntity{
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    // @JoinColumn(name="reservation_id")
     @OneToMany
     private List<Reservation> reservations;
 
     @Enumerated(EnumType.STRING) // By default, Hibernate maps enums using the 'EnumType.ORDINAL'. Safer to use 'EnumType.String' to avoid issues if the order of the num values changes.
     private UserType userType; //enum to indicate the user type
-
-    // @ManyToMany
-    // @JoinTable(
-    //     name = "User_Role",
-    //     joinColumns = @JoinColumn(name="userId"),
-    //     inverseJoinColumns = @JoinColumn(name="roleId")
-    // )
     
-    // public String toString() {
-    //     return "User{" + 
-    //             "firstName='" + firstName + '\'' + 
-    //             ", lastName='" + lastName + '\'' + 
-    //             ", email='" + email + '\'' + 
-    //             ", password='" + password + '\'' + 
-    //             '}';
-    // }
     public String getFirstName() {
         return firstName;
     }
@@ -106,4 +87,13 @@ public class User extends AbstractEntity{
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
+
+        // public String toString() {
+    //     return "User{" + 
+    //             "firstName='" + firstName + '\'' + 
+    //             ", lastName='" + lastName + '\'' + 
+    //             ", email='" + email + '\'' + 
+    //             ", password='" + password + '\'' + 
+    //             '}';
+    // }
 }

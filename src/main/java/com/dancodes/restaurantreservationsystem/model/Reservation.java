@@ -1,7 +1,7 @@
 package com.dancodes.restaurantreservationsystem.model;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,12 +12,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-// @Table(name="Reservation", uniqueConstraints = @UniqueConstraint(columnNames={"date", "time"}))
+@Table(name="reservation", uniqueConstraints = @UniqueConstraint(columnNames={"reservationDate", "reservationTime", "restaurant_id"}))
 public class Reservation extends AbstractEntity{
 
-    // @Column(name="numberOfPeople")
+    @Column(name="numberOfPeople")
     private int numberOfPeople;
 
+    @Column(name="CheckedIn")
     private boolean checkedIn;
 
     // @ManyToOne(fetch = FetchType.LAZY)
@@ -26,6 +27,10 @@ public class Reservation extends AbstractEntity{
     private User user;
 
     private String userEmail;
+
+    private LocalTime reservationTime;
+
+    private LocalDate reservationDate;
 
     @ManyToOne
     private Tables tables;
@@ -39,6 +44,22 @@ public class Reservation extends AbstractEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id") // Ensures this is the only reference to "restaurant_id"
     private Restaurant restaurant;
+
+    public LocalTime getReservationTime() {
+        return reservationTime;
+    }
+
+    public void setReservationTime(LocalTime reservationTime) {
+        this.reservationTime = reservationTime;
+    }
+
+        public LocalDate getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(LocalDate reservationDate) {
+        this.reservationDate = reservationDate;
+    }
 
     public int getNumberOfPeople() {
         return numberOfPeople;

@@ -31,15 +31,22 @@ public class ReservationRestController {
     }
 
     @GetMapping("/search")
-    public List<Reservation> getReservations() {
+    public ResponseEntity<List<Reservation>> getReservations() {
         LOGGER.info("getReservations() is invoked");
-        return reservationService.getReservations();
+        try {
+            List<Reservation> reservations = reservationService.getReservations();
+            return new ResponseEntity<>(reservations, HttpStatus.ACCEPTED); 
+        } catch (ReservationNotFound e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/search/{id}")
     public ResponseEntity<Reservation> findReservation(@PathVariable("id") Long id) {
+        LOGGER.info("findReservation() is invoked for id: " + id);
         try {
-            LOGGER.info("findReservation() is invoked for id: " + id);
             Reservation reservation = reservationService.getReservationById(id);
             return new ResponseEntity<>(reservation, HttpStatus.ACCEPTED);
         } catch (ReservationNotFound e) {
@@ -51,12 +58,10 @@ public class ReservationRestController {
 
     @PostMapping("/create")
     public ResponseEntity<Reservation> createReservation(@RequestBody ReservationCreateRequest reservationCreateRequest) {
+        LOGGER.info("createReservation() is invoked for: " + reservationCreateRequest.toString());
         try {
-            LOGGER.info("createReservation() is invoked for: " + reservationCreateRequest);
             Reservation reservation = reservationService.createReservation(reservationCreateRequest);
             return new ResponseEntity<>(reservation, HttpStatus.CREATED);
-        } catch (ReservationNotFound e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

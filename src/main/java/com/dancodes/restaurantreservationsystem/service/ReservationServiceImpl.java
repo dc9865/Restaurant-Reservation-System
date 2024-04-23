@@ -83,12 +83,12 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation createReservation(ReservationCreateRequest reservationRequest) {
         // validate all request initially
+        LOGGER.info("Service: CreateReservation() invoked");
         validateRequest(reservationRequest);
 
         LOGGER.info("Request is validated, starting to make a reservation");
         Reservation reservation = new Reservation();
         reservation.setCheckedIn(false);
-        reservation.setId(reservationRequest.getReservationId());
         reservation.setNumberOfPeople(reservationRequest.getNumberOfPeople());
         reservation.setUserEmail(reservationRequest.getUserEmail());
 
@@ -97,11 +97,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     public void validateRequest(ReservationCreateRequest reservationRequest) {
-
-        if (validateReservation(reservationRequest.getReservationId(), reservationRequest.getNumberOfPeople(), reservationRequest.getReservationDate())) {
+        LOGGER.info("Service: validateRequest() invoked");
+        if (validateReservation(reservationRequest.getNumberOfPeople(), reservationRequest.getReservationDate())) {
             LOGGER.info("Reservation is validated");
         }
-        if (userService.validateUser(reservationRequest.getUserEmail())) {
+        if (userService.validateUser(reservationRequest.getUserEmail(), reservationRequest.getUserPhoneNumber())) {
             LOGGER.info("User is validated");
         }
         if (restaurantService.validateRestaurant(reservationRequest.getRestaurantId(), reservationRequest.getNumberOfPeople(), reservationRequest.getReservationDate(), reservationRequest.getReservationTime())) {
@@ -117,12 +117,7 @@ public class ReservationServiceImpl implements ReservationService {
     //     return !reservationTime.isBefore(openingTime) && !reservationTime.isAfter(closingTime);   
     // }
 
-    private boolean validateReservation(Long id, int numberOfPeople, LocalDate reservationDate) {
-
-        // Check if the reservation ID already exists
-        if (reservationRepository.existsById(id)) {
-            throw new IllegalArgumentException("Reservation ID already exists");
-        }
+    private boolean validateReservation(int numberOfPeople, LocalDate reservationDate) {
         
         // Check for a valid number of people (e.g., not zero, within restaurant capacity limits)
         if (numberOfPeople <= 0) {

@@ -6,13 +6,12 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.dancodes.restaurantreservationsystem.dto.ReservationCreateRequest;
-import com.dancodes.restaurantreservationsystem.exceptions.EmailNotValid;
+import com.dancodes.restaurantreservationsystem.dto.UserCreateRequest;
+
 // import com.dancodes.restaurantreservationsystem.dto.ReservationRequest;
-import com.dancodes.restaurantreservationsystem.exceptions.UserNotFoundException;
+
 import com.dancodes.restaurantreservationsystem.model.User;
 import com.dancodes.restaurantreservationsystem.model.UserType;
 import com.dancodes.restaurantreservationsystem.repository.UserRepository;
@@ -119,28 +118,68 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean validateUser(String email) {
-        // Check if the email is provided
-        if (email == null) {
-            throw new IllegalArgumentException("Email is empty");
-        }
-
+    public boolean validateUser(String email, String phoneNumber) {
         // Check for email format validity
         validateEmail(email);
-        LOGGER.info("user's email is validated");
+        validatePhoneNumber(phoneNumber);
 
         return true;
 
     }
 
     private void validateEmail(String email) {
+        // Check if email is empty
+        if (email == null) {
+            throw new IllegalArgumentException("email cannot be null");
+        }
         // Add a check if email is valid
-        if (userRepository.existsByEmail(email)) {
-            throw new EmailNotValid("Email {} already exists" + email);
+        // if (userRepository.existsByEmail(email)) {
+        //     throw new EmailNotValid("Email: " + email + " already exists");
+        // }
+        // if (!(email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"))) {
+        //     throw new EmailNotValid("Invalid email sytntax");
+        // }
+    }
+
+    private void validatePhoneNumber(String phoneNumber) {
+        // Check if phone number is empty
+        if (phoneNumber == null) {
+            throw new IllegalArgumentException("phoneNumber cannot be null");
         }
-        if (!(email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"))) {
-            throw new EmailNotValid("Invalid email sytntax");
+        // Add a check if phone number is valid
+        // if (userRepository.existsByPhoneNumber(phoneNumber)) {
+        //     throw new PhoneNumberNotValid("Phone Number: " + phoneNumber + " already exists");
+        // }
+    }
+
+    @Override
+    public User getUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException(
+                    "user with id " + userId + " does not exist"
+                ));
+        return user;
+    }
+
+    @Override
+    public User createUser(UserCreateRequest userCreateRequest) {
+        // Validate email, and phoneNumber
+        String email = userCreateRequest.getEmail();
+        String phoneNumber = userCreateRequest.getPhoneNumber();
+        if (validateUser(email, phoneNumber)) {
+            LOGGER.info("The user is validated");
         }
+
+        User user = new User();
+        user.setFirstName(userCreateRequest.getFirstName());
+        user.setLastName(userCreateRequest.getLastName());
+        user.setEmail(userCreateRequest.getEmail());
+        user.setPassword(userCreateRequest.getPassword());
+        user.setAddress(userCreateRequest.getAddress());
+        user.setPhoneNumber(userCreateRequest.getPhoneNumber());
+        user.setReservations(null);
+        user.setUserType(UserType.REGULAR_USER);
+        return userRepository.save(user);
     }
 
     

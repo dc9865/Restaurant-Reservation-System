@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Reservation</title>
+</head>
+<body>
+    <h1>Make a Reservation</h1>
+    <form th:action="@{/bookReservation}" th:object="${reservationCreateRequest}" method="post">
+        <div>
+            <label for="restaurantId">RestaurantId:</label>
+            <input type="text" id="restaurantId" name="restaurantId" th:field="*{restaurantId}" required />
+        </div>
+        <div>
+            <label for="restaurantName">Restaurant Name:</label>
+            <input type="text" id="restaurantName" name="restaurantName" th:field="*{restaurantName}" required />
+        </div>
+        <div>
+            <label for="userFirstName">User First Name:</label>
+            <input type="text" id="userFirstName" name="userFirstName" th:field="*{userFirstName}" required />
+        </div>
+        <div>
+            <label for="userLastName">User Last Name:</label>
+            <input type="text" id="userLastName" name="userLastName" th:field="*{userLastName}" required />
+        </div>
+        <div>
+            <label for="userEmail">User Email:</label>
+            <input type="text" id="userEmail" name="userEmail" th:field="*{userEmail}" required />
+        </div>
+        <div>
+            <label for="userPhoneNumber">User Phone Number:</label>
+            <input type="text" id="userPhoneNumber" name="userPhoneNumber" th:field="*{userPhoneNumber}" required />
+        </div>
+        <div>
+            <label for="reservationDate">Reservation Date:</label>
+            <input type="date" id="reservationDate" name="reservationDate" th:field="*{reservationDate}" required />
+        </div>
+        <div>
+            <label for="reservationTime">Reservation Time:</label>
+            <input type="time" id="reservationTime" name="reservationTime" th:field="*{reservationTime}" required />
+        </div>
+        <div>
+            <label for="numberOfPeople">Number of Guests:</label>
+            <input type="number" id="numberOfPeople" name="numberOfPeople" th:field="*{numberOfPeople}" min="1" required />
+        </div>
+        <div>
+            <button type="submit">Submit Reservation</button>
+        </div>
+    </form>
+    <p><a th:href="@{/}">Return to Home</a></p>
+</body>
+</html>
