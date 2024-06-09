@@ -19,7 +19,7 @@ import com.dancodes.restaurantreservationsystem.exceptions.UserNotFound;
 import com.dancodes.restaurantreservationsystem.model.User;
 import com.dancodes.restaurantreservationsystem.service.UserService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
 public class UserRestController {
@@ -33,7 +33,7 @@ public class UserRestController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<User>> findUsers() {
         LOGGER.info("getUsers() is invoked");
         try {
             List<User> reservations = userService.getUsers();
@@ -57,6 +57,19 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // @GetMapping("/search")
+    // public ResponseEntity<User> findUserByNameAndPassword(@PathVariable("id") Long id, ) {
+    //     LOGGER.info("findUserById() is invoked for id: " + id);
+    //     try {
+    //         User user = userService.getUserById(id);
+    //         return new ResponseEntity<>(user, HttpStatus.OK);
+    //     } catch (UserNotFound e) {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     } catch (Exception e) {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody UserCreateRequest userCreateRequest) {

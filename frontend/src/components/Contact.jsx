@@ -21,9 +21,9 @@ function Contact() {
   return (
     <div>
       <h1>Contact Us</h1>
-      <p>Address: 123 Main Street, Hometown, USA</p>
-      <p>Phone: (123) 456-7890</p>
-      <p>Email: contact@restaurant.com</p>
+      <p>Address: 14 Wisteria Way, Commack, USA</p>
+      <p>Phone: (929) 318-9330</p>
+      <p>Email: dyhcho@gmail.com</p>
 
       <form onSubmit={handleSubmit}>
         <label>Name:</label>

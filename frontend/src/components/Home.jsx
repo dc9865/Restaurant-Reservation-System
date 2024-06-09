@@ -1,6 +1,7 @@
 // src/components/Home.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../style.css';
 
 function Home() {
   return (
@@ -10,6 +11,7 @@ function Home() {
       <nav>
         <ul>
           <li><Link to="/reservations">Make a Reservation</Link></li>
+          <li><Link to="/login">Sign In</Link></li>
           <li><Link to="/menu">View Menu</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
         </ul>

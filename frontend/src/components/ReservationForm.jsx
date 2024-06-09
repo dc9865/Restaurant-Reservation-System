@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import '../style.css'
+const restaurantSearchUrl = "http://localhost:8080/restaurants/findByNameAndAddress"
 
 function ReservationForm() {
   const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ function ReservationForm() {
     try {
       e.preventDefault();
       // Fetch the restaurant ID based on the name and address
-      const restaurantResponse = await fetch(`http://localhost:8080/restaurants/searchByNameAndAddress/${encodeURIComponent(formData.restaurantName)}/${encodeURIComponent(formData.restaurantAddress)}`, {
+      const restaurantResponse = await fetch(`${restaurantSearchUrl}/${encodeURIComponent(formData.restaurantName)}/${encodeURIComponent(formData.restaurantAddress)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -50,7 +52,6 @@ function ReservationForm() {
       
       finalFormData.restaurantId = restaurantData.id;
 
-      console.log(finalFormData);
       const response = await fetch(`http://localhost:8080/reservations/create`, {
         method: 'POST',
         headers: {
@@ -79,7 +80,9 @@ function ReservationForm() {
                     <h2>Reservation Form</h2>
                     <li>
                       <label>Name:</label>
-                      <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
+                      <input 
+                        type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
+                      
                     </li>
                     <li>
                       <label>Contact:</label>

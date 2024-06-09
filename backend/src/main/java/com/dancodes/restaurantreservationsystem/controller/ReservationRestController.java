@@ -14,7 +14,7 @@ import com.dancodes.restaurantreservationsystem.model.Reservation;
 import com.dancodes.restaurantreservationsystem.service.ReservationService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/reservations")
 public class ReservationRestController {
 
@@ -26,7 +26,7 @@ public class ReservationRestController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Reservation>> getReservations() {
+    public ResponseEntity<List<Reservation>> findReservations() {
         LOGGER.info("getReservations() is invoked");
         try {
             List<Reservation> reservations = reservationService.getReservations();

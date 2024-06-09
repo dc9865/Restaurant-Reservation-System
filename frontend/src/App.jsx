@@ -6,6 +6,8 @@ import ReservationForm from './components/ReservationForm';
 import Menu from './components/Menu';
 import Contact from './components/Contact';
 import ErrorPage from './components/ErrorPage';
+import Login from './components/Login';
+import './App.css';
 
 function App() {
 
@@ -13,6 +15,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/reservations" element={<ReservationForm />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/contact" element={<Contact />} />

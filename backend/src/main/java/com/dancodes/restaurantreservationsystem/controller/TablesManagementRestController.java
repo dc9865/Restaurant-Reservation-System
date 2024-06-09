@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@CrossOrigin(origins = "http://localhost:3000")
+// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/restaurants/{restaurantId}/tables")
 public class TablesManagementRestController {
@@ -35,7 +35,7 @@ public class TablesManagementRestController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Set<Tables>> getTables(@PathVariable("restaurantId") Long restaurantId) {
+    public ResponseEntity<Set<Tables>> findTables(@PathVariable("restaurantId") Long restaurantId) {
         LOGGER.info("getTables() is invoked");
         try {
             Set<Tables> tables = tablesManagementService.getTables(restaurantId);
@@ -48,7 +48,7 @@ public class TablesManagementRestController {
     }
 
     @GetMapping("/search/{tableId}")
-    public ResponseEntity<Tables> getTableById(@PathVariable("tableId") Long tableId, @PathVariable("restaurantId") Long restaurantId) {
+    public ResponseEntity<Tables> findTableById(@PathVariable("tableId") Long tableId, @PathVariable("restaurantId") Long restaurantId) {
         LOGGER.info("getTableById is invoked for restaurnat id " + restaurantId + " and table id: " + tableId);
         try {
             Tables table = tablesManagementService.getTableById(tableId, restaurantId);
