@@ -10,11 +10,13 @@ import com.dancodes.restaurantreservationsystem.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // @Query("SELECT s FROM User s WHERE s.email = ?1")
-    Optional<User> findByEmail(String email);
     // boolean existsById(Long id);
 
-    boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
+
+    Optional<User> findByUsername(String username);
 
     boolean existsByPhoneNumber(String phoneNumber);
+    
+
 }

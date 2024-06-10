@@ -12,7 +12,7 @@ public class ReservationConverter implements Converter<ReservationCreateRequest,
         request.setRestaurantId(reservation.getRestaurant().getId());
         request.setUserFirstName(reservation.getUser().getFirstName());
         request.setUserLastName(reservation.getUser().getLastName());
-        request.setUserEmail(reservation.getUser().getEmail());
+        request.setUserEmail(reservation.getUser().getUsername());
         request.setUserPhoneNumber(reservation.getUser().getPhoneNumber());
         request.setNumberOfPeople(reservation.getNumberOfPeople());
         request.setCheckedIn(false);

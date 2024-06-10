@@ -17,4 +17,6 @@ public interface UserService {
 
     public User createUser(UserCreateRequest userCreateRequest);
 
+    public User authenticate(String username, String password);
+
 }

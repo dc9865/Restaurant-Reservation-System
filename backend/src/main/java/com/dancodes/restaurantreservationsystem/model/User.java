@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends AbstractEntity{
 
     @Column(name = "first_name")
@@ -22,8 +22,8 @@ public class User extends AbstractEntity{
     @Column(name = "last_name")
     private String lastName; 
 
-    @Column(name = "email", unique=true)
-    private String email;
+    @Column(name = "username", unique=true)
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -59,12 +59,6 @@ public class User extends AbstractEntity{
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
     public String getAddress() {
         return address;
     }
@@ -90,6 +84,12 @@ public class User extends AbstractEntity{
     }
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getUsername() {
+        return username;
     }
 
         // public String toString() {

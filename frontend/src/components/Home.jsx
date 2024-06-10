@@ -11,7 +11,7 @@ function Home() {
       <nav>
         <ul>
           <li><Link to="/reservations">Make a Reservation</Link></li>
-          <li><Link to="/login">Sign In</Link></li>
+          <li><Link to="/auth/login">Sign In</Link></li>
           <li><Link to="/menu">View Menu</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
         </ul>

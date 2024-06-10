@@ -3,7 +3,7 @@ package com.dancodes.restaurantreservationsystem.dto;
 public class UserCreateRequest {
     private String firstName;
     private String lastName;
-    private String email;
+    private String username;
     private String password;
     private String address;
     private String phoneNumber;
@@ -20,11 +20,11 @@ public class UserCreateRequest {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public String getPassword() {
         return password;
@@ -44,6 +44,5 @@ public class UserCreateRequest {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
 
 }

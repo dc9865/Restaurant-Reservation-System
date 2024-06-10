@@ -70,15 +70,4 @@ public class UserRestController {
     //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     //     }
     // }
-
-    @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody UserCreateRequest userCreateRequest) {
-        LOGGER.info("createUser() is invoked for: " + userCreateRequest.toString());
-        try {
-            User user = userService.createUser(userCreateRequest);
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

@@ -2,11 +2,15 @@ package com.dancodes.restaurantreservationsystem.service;
 
 import java.util.List;
 
+import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dancodes.restaurantreservationsystem.dto.UserCreateRequest;
+import com.dancodes.restaurantreservationsystem.exceptions.UserNotFound;
 
 // import com.dancodes.restaurantreservationsystem.dto.ReservationRequest;
 
@@ -20,6 +24,7 @@ import jakarta.transaction.Transactional;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final BCryptPasswordEncoder passwordEncoder;
     // private final PasswordEncoder passwordEncoder;
 
     // public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -29,6 +34,7 @@ public class UserServiceImpl implements UserService{
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
@@ -161,8 +167,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User createUser(UserCreateRequest userCreateRequest) {
+        LOGGER.info("createUser() is invoked");
         // Validate email, and phoneNumber
-        String email = userCreateRequest.getEmail();
+        String email = userCreateRequest.getUsername();
         String phoneNumber = userCreateRequest.getPhoneNumber();
         if (validateUser(email, phoneNumber)) {
             LOGGER.info("The user is validated");
@@ -171,8 +178,10 @@ public class UserServiceImpl implements UserService{
         User user = new User();
         user.setFirstName(userCreateRequest.getFirstName());
         user.setLastName(userCreateRequest.getLastName());
-        user.setEmail(userCreateRequest.getEmail());
-        user.setPassword(userCreateRequest.getPassword());
+        user.setUsername(userCreateRequest.getUsername());
+        String encodedPassword = passwordEncoder.encode(userCreateRequest.getPassword());
+        user.setPassword(encodedPassword);
+        System.out.println(encodedPassword);
         user.setAddress(userCreateRequest.getAddress());
         user.setPhoneNumber(userCreateRequest.getPhoneNumber());
         user.setReservations(null);
@@ -180,6 +189,22 @@ public class UserServiceImpl implements UserService{
         return userRepository.save(user);
     }
 
+    @Override
+    public User authenticate(String username, String password) throws UserNotFound {
+        LOGGER.info("Authenticating user with username: {}", username);
+        User user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new IllegalStateException(
+            "user with username, " + username + " does not exist"
+        ));
+        LOGGER.info("Found user: {}", user);
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            LOGGER.info("Password matches for user: {}", username);
+            return user;
+        } else {
+            LOGGER.error("Password does not match for user: {}", username);
+            throw new UserNotFound(password + " is incorrect for user: " + username);
+        }
+    }
     
 
 }

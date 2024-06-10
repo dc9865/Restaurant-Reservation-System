@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../style.css';
+import { Link } from 'react-router-dom';
+import './Registration.jsx'
+import '../loginStyle.css';
 
-const LOGIN_URL = "http://localhost:8080/users/searchByNameAndPassword"
+const LOGIN_URL = "http://localhost:8080/auth/login";
 
 function Login() {
 
@@ -9,14 +11,10 @@ function Login() {
     const inputRef = useRef();
     const errRef = useRef();
 
-    const [userName, setUserName] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [success, setSuccess] = useState(false);
     const [errMsg, setErrorMessage] = useState('');
-
-    useEffect(() => {
-        inputRef.current.addEventListener('click', handleSubmit);
-    })
 
     useEffect(() => {
         userRef.current.focus();
@@ -31,16 +29,24 @@ function Login() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({userName, password}),
+                body: JSON.stringify({username, password}),
             })
-            console.log(JSON.stringify(response?.data));
+            if (!response.ok) {
+                throw new Error('HTTP error! status: ${response.status}');
+            }
+
+            const data = await response.json();
+            console.log(JSON.stringify(data));
+            // Save the token to the local storage
+            localStorage.setItem('jwtToken', data.token);
+
             setSuccess(true);
 
         } catch (err) {
             if (!err?.response) {
                 setErrorMessage('No Server Response');
             } else if (err.response?.status === 400) {
-                setErrorMessage('Invalid Username or Password');
+                setErrorMessage('Invalid username or Password');
             } else if (err.response?.status === 401) {
                 setErrorMessage('Unauthorized');
             } else {
@@ -70,8 +76,8 @@ function Login() {
                             id="username"
                             ref={userRef}
                             autoComplete="off"
-                            placeholder="Username"
-                            onChange={(e) => {setUserName(e.target.value)}}
+                            placeholder="username"
+                            onChange={(e) => {setUsername(e.target.value)}}
                             required
                         />
                         <br></br>
@@ -84,6 +90,8 @@ function Login() {
                         />
                         <br></br>
                         <button type="submit" ref={inputRef}>Log in</button>
+
+                        <p>Don't have an account? <Link to="/auth/register">Register</Link></p>
                     </form>
                 </section>
             )}

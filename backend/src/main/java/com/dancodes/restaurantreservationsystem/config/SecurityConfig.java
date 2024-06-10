@@ -22,6 +22,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/auth/**", "/users/create").permitAll()
                 .anyRequest().permitAll() // Temporarily allow all requests for testing
             );
         return http.build();
